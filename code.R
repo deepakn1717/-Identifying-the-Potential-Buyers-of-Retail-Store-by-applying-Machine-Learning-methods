@@ -50,24 +50,10 @@ predicttest > 0.25
 
 library(InformationValue)
 plotROC(actuals=salesMadeTrain$Sale.Made, predictedScores=predicttrain)
-#plot(salesMadeTest$Sale.Made,col="green", type = "l", lty=1.8)
-#lines(predicttest,col="blue",type="l",lty = 1.8)
 misClassError(salesMadeTest$Sale.Made, predicttest, threshold = 2.5)
 Concordance(salesMadeTest$Sale.Made, predicttest)
 
 salesMade2 <- salesMade1
-
-#salesMade2$Mens.Merchandise[salesMade2$Mens.Merchandise == 0] <- "no"
-#salesMade2$Mens.Merchandise[salesMade2$Mens.Merchandise == 1] <- "yes"
-#salesMade2$Womens.Merchandise[salesMade2$Womens.Merchandise == 0] <- "no"
-#salesMade2$Womens.Merchandise[salesMade2$Womens.Merchandise == 1] <- "yes"
-#salesMade2$New.Customer[salesMade2$New.Customer == 1] <- "yes"
-#salesMade2$New.Customer[salesMade2$New.Customer == 0] <- "no"
-#salesMade2$Visited.Website[salesMade2$Visited.Website == 0] <- "no"
-#salesMade2$Visited.Website[salesMade2$Visited.Website == 1] <- "yes"
-#salesMade2$Sale.Made[salesMade2$Sale.Made == 0] <- "no"
-#salesMade2$Sale.Made[salesMade2$Sale.Made == 1] <- "yes"
-
 names(salesMade2)
 
 #subsetting data into test and train
@@ -84,6 +70,7 @@ nrow(salesMade2)
 
 #class(Sales.Made1)
 names(salesMade2)
+
 #decision tree
 library(rpart)
 library(rpart.plot)
@@ -103,8 +90,7 @@ library(caret)
 confusionMatrix(table(predictions, salesMade2Test$Sale.Made))
 
 
-# Random Forest # Ensemble Method 
-# Decision Tree is a weak learner 
+# Random Forest 
 
 library(randomForest)
 View(salesMadeTrain)
