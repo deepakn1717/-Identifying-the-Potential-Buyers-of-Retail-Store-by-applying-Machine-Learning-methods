@@ -33,63 +33,6 @@ nrow(salesMadeTest)
 nrow(salesMadeTrain)
 names(salesMade1)
 
-#Logical Regression model
-salesLog <- glm( Sale.Made ~ ., data = salesMade1, family = binomial)
-summary(salesLog)
-salesLog1 <- glm( Sale.Made ~ Months.Since.Last.Buy+Spend.Category+New.Customer+Visited.Website, data = salesMade1, family = binomial)
-summary(salesLog1)
-predicttrain <- predict(salesLog1, type ="response")
-predicttrain
-library(ROCR)
-ROCRPred <- prediction (predicttrain, salesMade1$Sale.Made)
-ROCRPref <- performance(ROCRPred, "tpr", "fpr")
-plot(ROCRPref, colorize = TRUE, print.cutoffs.at = seq(0,1,by=0.1), text.adj = c(-0.2, 1.7))
-table(salesMade1$Sale.Made, predicttrain > 0.25)
-predicttest <- predict(salesLog, newdata = salesMadeTest, type = "response")
-predicttest > 0.25
-
-library(InformationValue)
-plotROC(actuals=salesMadeTrain$Sale.Made, predictedScores=predicttrain)
-misClassError(salesMadeTest$Sale.Made, predicttest, threshold = 2.5)
-Concordance(salesMadeTest$Sale.Made, predicttest)
-
-salesMade2 <- salesMade1
-names(salesMade2)
-
-#subsetting data into test and train
-set.seed(81)
-library(caTools)
-split <- sample.split(salesMade2$Sale.Made,SplitRatio = 0.75)
-class(split)
-split
-salesMade2Train <- subset(salesMade2,split == TRUE)
-salesMade2Test <- subset(salesMade2,split == FALSE)
-nrow(salesMade2Train)
-nrow(salesMade2Test)
-nrow(salesMade2)
-
-#class(Sales.Made1)
-names(salesMade2)
-
-#decision tree
-library(rpart)
-library(rpart.plot)
-churn.rp <- rpart(Sale.Made ~ ., data = salesMade2Train)
-churn.rp
-
-plot(churn.rp, margin = 0.1)
-text(churn.rp, all=TRUE, use.n = TRUE, pretty = 0)
-
-rpart.plot(churn.rp,tweak = 1.8)
-
-# Make prediction with the help of tree 
-predictions <- predict (churn.rp, salesMade2Test, type = "class")
-predictions
-
-library(caret)
-confusionMatrix(table(predictions, salesMade2Test$Sale.Made))
-
-
 # Random Forest 
 
 library(randomForest)
