@@ -11,7 +11,7 @@ library(ggthemes)
 salesMade <- read.csv("C:\\Users\\deepa\\Desktop\\Logistic Regression - Problem Statement\\Retail_Case_Study_Data.csv")
 
 #understandng of data
-View(salesMade)
+head(salesMade)
 class(salesMade)
 dim(salesMade)
 str(salesMade)
@@ -40,16 +40,15 @@ nrow(salesMadeTrain)
 names(salesMade1)
 
 # Random Forest 
-
-View(salesMadeTrain)
+head(salesMadeTrain)
 str(salesMadeTrain)
-churn.rf <- randomForest(Sale.Made ~ . , data = salesMadeTrain)
-churn.rf
-churn.prediction <- predict(churn.rf, salesMadeTest)
-confusionMatrix(table(churn.prediction, salesMadeTest$Sale.Made))
+sales.rf <- randomForest(Sale.Made ~ . , data = salesMadeTrain)
+sales.rf
+sales.prediction <- predict(sales.rf, salesMadeTest)
+confusionMatrix(table(sales.prediction, salesMadeTest$Sale.Made))
 
 # Get importance
-importance    <- importance(churn.rf)
+importance    <- importance(sales.rf)
 varImportance <- data.frame(Variables = row.names(importance), 
                             Importance = round(importance[ ,'MeanDecreaseGini'],2))
 
@@ -67,5 +66,5 @@ ggplot(rankImportance, aes(x = reorder(Variables, Importance),
   coord_flip() + 
   theme_few()
 
-plot(churn.rf, ylim=c(0,0.36))
+plot(sales.rf, ylim=c(0,0.36))
 
