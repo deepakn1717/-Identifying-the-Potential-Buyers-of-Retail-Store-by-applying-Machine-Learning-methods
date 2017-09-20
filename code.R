@@ -1,5 +1,12 @@
 # -Identifying-the-Potential-Buyers-of-Retail-Store-by-applying-Machine-Learning-methods
 
+#librs
+library(caTools)
+library(randomForest)
+library(caret)
+library(dplyr)
+library(ggthemes)
+
 #data import
 salesMade <- read.csv("C:\\Users\\deepa\\Desktop\\Logistic Regression - Problem Statement\\Retail_Case_Study_Data.csv")
 
@@ -22,7 +29,6 @@ salesMade1$Sale.Made<- as.factor(salesMade1$Sale.Made)
 
 #subsetting data into test and train
 set.seed(88)
-library(caTools)
 split <- sample.split(salesMade1$Sale.Made,SplitRatio = 0.75)
 class(split)
 split
@@ -35,16 +41,11 @@ names(salesMade1)
 
 # Random Forest 
 
-library(randomForest)
 View(salesMadeTrain)
 str(salesMadeTrain)
-
-
-
 churn.rf <- randomForest(Sale.Made ~ . , data = salesMadeTrain)
 churn.rf
 churn.prediction <- predict(churn.rf, salesMadeTest)
-
 confusionMatrix(table(churn.prediction, salesMadeTest$Sale.Made))
 
 # Get importance
@@ -67,3 +68,4 @@ ggplot(rankImportance, aes(x = reorder(Variables, Importance),
   theme_few()
 
 plot(churn.rf, ylim=c(0,0.36))
+
