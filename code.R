@@ -6,7 +6,6 @@ library(randomForest)
 library(caret)
 library(dplyr)
 library(ggthemes)
-
 #data import
 salesMade <- read.csv("C:\\Users\\deepa\\Desktop\\Logistic Regression - Problem Statement\\Retail_Case_Study_Data.csv")
 
@@ -26,6 +25,23 @@ salesMade1$Womens.Merchandise<- as.factor(salesMade1$Womens.Merchandise)
 salesMade1$New.Customer<- as.factor(salesMade1$New.Customer)
 salesMade1$Visited.Website<- as.factor(salesMade1$Visited.Website)
 salesMade1$Sale.Made<- as.factor(salesMade1$Sale.Made)
+
+#Spending category updates
+table(salesMade1$Spend.Category)
+mean(salesMade1$Spend.Numeric)
+salesMade1$Spend.Category <- as.character(salesMade1$Spend.Category)
+str(salesMade1$Spend.Category)
+salesMade1$Category[salesMade1$Spend.Category == "1) $0 - $100"] <- "low"
+salesMade1$Category[salesMade1$Spend.Category == "2) $100 - $200"] <- "low"
+salesMade1$Category[salesMade1$Spend.Category == "3) $200 - $350"] <- "mid"
+salesMade1$Category[salesMade1$Spend.Category == "4) $350 - $500"] <- "mid"
+salesMade1$Category[salesMade1$Spend.Category == "5) $500 - $750"] <- "high"
+salesMade1$Category[salesMade1$Spend.Category == "6) $750 - $1,000"] <- "high"
+salesMade1$Category[salesMade1$Spend.Category == "7) $1,000 +"] <- "high"
+table(salesMade1$Category)
+salesMade1$Category <- as.factor(salesMade1$Category)
+salesMade1$Spend.Category <- as.factor(salesMade1$Spend.Category)
+sum(is.na(salesMade1))
 
 #subsetting data into test and train
 set.seed(88)
